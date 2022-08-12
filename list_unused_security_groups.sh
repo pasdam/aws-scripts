@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
+print_usage() {
+  SCRIPT_NAME=$(basename "$0")
+  echo "Usage: $SCRIPT_NAME <aws-profile> <aws-region>"
+  echo "Example: $SCRIPT_NAME my-profile us-east-1"
+  exit "$1"
+}
+
+export AWS_PROFILE=$1
 if [ -z "$AWS_PROFILE" ]; then
-  export AWS_PROFILE=$1
-  if [ -z "$AWS_PROFILE" ]; then
-    1>&2 echo "Please specify the AWS profile name as first argument"
-  fi
+  1>&2 echo "[ERROR] Please specify the AWS profile name as first argument"
+  print_usage 1
 fi
 
+export AWS_REGION=$2
 if [ -z "$AWS_REGION" ]; then
-  export AWS_REGION=$2
-  if [ -z "$AWS_REGION" ]; then
-    1>&2 echo "Please specify the AWS region as second argument"
-  fi
+  1>&2 echo "[ERROR] Please specify the AWS region as second argument"
+  print_usage 2
 fi
 
 export AWS_PAGER="" # Disable pagination
